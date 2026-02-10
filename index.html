@@ -13,14 +13,24 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
   background: linear-gradient(135deg, #4b2e2e, #7a1f2b);
+  overflow: hidden;
+}
+
+/* Safe, true full-screen wrapper */
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  padding:
+    env(safe-area-inset-top)
+    env(safe-area-inset-right)
+    env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 20px;
-  color: #3b1f1f;
 }
 
 .card {
@@ -28,11 +38,12 @@ body {
   padding: 40px 30px;
   border-radius: 24px;
   max-width: 420px;
-  width: 100%;
+  width: 90%;
   text-align: center;
   box-shadow: 0 30px 60px rgba(0,0,0,0.25);
-  position: relative;
+  z-index: 2;
 }
+
 
 h1 {
   font-size: 2.3rem;
@@ -52,30 +63,37 @@ p {
 }
 
 button {
+  position: absolute;
   border: none;
   padding: 14px 26px;
   font-size: 1.1rem;
   border-radius: 999px;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.25s ease;
+  z-index: 3;
 }
 
 #yes {
   background: #7a1f2b;
   color: #fff;
+  left: 50%;
+  top: 65%;
+  transform: translate(-50%, -50%) scale(1);
   box-shadow: 0 12px 25px rgba(122,31,43,0.5);
-  transform: scale(1);
 }
 
 #no {
   background: #d6c2b8;
   color: #4b2e2e;
-  position: relative;
+  left: 50%;
+  top: 75%;
+  transform: translate(-50%, -50%);
 }
 
-#yes.big { transform: scale(1.4); }
-#yes.bigger { transform: scale(1.7); }
-#yes.huge { transform: scale(2.1); }
+/* Growth stages */
+#yes.big { transform: translate(-50%, -50%) scale(1.4); }
+#yes.bigger { transform: translate(-50%, -50%) scale(1.8); }
+#yes.huge { transform: translate(-50%, -50%) scale(2.3); }
 
 .heart {
   position: absolute;
@@ -114,19 +132,20 @@ button {
 
 <body>
 
-<div class="card">
-  <h1>Kriti 🤎</h1>
-  <p>
-    I was going to be cool about this…  
-    but honestly…  
-    <br><br>
-    Will you be my Valentine? 🌹
-  </p>
-
-  <div class="buttons">
-    <button id="yes">Yes ❤️</button>
-    <button id="no">No 🙃</button>
+<div class="viewport">
+  <div class="card">
+    <h1>Kriti 🤎</h1>
+    <p>
+      I was going to be chill about this…  
+      but you know me 😌  
+      <br><br>
+      Will you be my Valentine? 🌹
+    </p>
   </div>
+
+  <!-- Buttons live OUTSIDE the card -->
+  <button id="yes">Yes ❤️</button>
+  <button id="no">No 🙃</button>
 </div>
 
 <audio id="music" loop>
@@ -149,9 +168,19 @@ function growYes() {
 }
 
 function moveNo() {
-  const x = Math.random() * 240 - 120;
-  const y = Math.random() * 160 - 80;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  const padding = 20;
+  const btnRect = noBtn.getBoundingClientRect();
+
+  const maxX = window.innerWidth - btnRect.width - padding;
+  const maxY = window.innerHeight - btnRect.height - padding;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+  noBtn.style.transform = "translate(0, 0)";
+
   growYes();
 }
 
