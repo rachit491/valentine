@@ -80,6 +80,7 @@ button {
   top: 65%;
   transform: translate(-50%, -50%) scale(1);
   box-shadow: 0 12px 25px rgba(122,31,43,0.5);
+  transition: transform 0.25s ease;
 }
 
 #no {
@@ -89,11 +90,6 @@ button {
   top: 75%;
   transform: translate(-50%, -50%);
 }
-
-/* Growth stages */
-#yes.big { transform: translate(-50%, -50%) scale(1.4); }
-#yes.bigger { transform: translate(-50%, -50%) scale(1.8); }
-#yes.huge { transform: translate(-50%, -50%) scale(2.3); }
 
 .heart {
   position: absolute;
@@ -160,12 +156,27 @@ const music = document.getElementById("music");
 let growLevel = 0;
 const sizes = ["big", "bigger", "huge"];
 
+let yesScale = 1;
 function growYes() {
-  if (growLevel < sizes.length) {
-    yesBtn.classList.add(sizes[growLevel]);
-    growLevel++;
+  yesScale += 0.25;
+
+  // Cap it so it doesn't break layout but still fills screen
+  if (yesScale > 6) yesScale = 6;
+
+  yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+
+  if (yesScale >= 4) {
+    yesBtn.style.padding = "40px 80px";
+    yesBtn.style.fontSize = "2.2rem";
+  }
+
+  if (yesScale >= 5.5) {
+    yesBtn.style.width = "90vw";
+    yesBtn.style.height = "30vh";
+    yesBtn.style.borderRadius = "40px";
   }
 }
+
 
 function moveNo() {
   const padding = 20;
@@ -203,9 +214,9 @@ setInterval(() => {
   });
 });
 
-/* If she avoids YES, it grows anyway */
 document.addEventListener("mousemove", growYes);
 document.addEventListener("touchmove", growYes, { passive: true });
+
 
 /* Play music on first interaction */
 document.body.addEventListener("click", () => {
