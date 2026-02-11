@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Kriti 🤎</title>
+<title>Kriti ❤️</title>
 
 <style>
 * {
@@ -130,7 +130,7 @@ button {
 
 <div class="viewport">
   <div class="card">
-    <h1>Kriti 🤎</h1>
+    <h1>Kriti ❤️</h1>
     <p>
       I was going to be chill about this…  
       but you know me 😌  
@@ -157,14 +157,17 @@ let growLevel = 0;
 const sizes = ["big", "bigger", "huge"];
 
 let yesScale = 1;
+let yesScale = 1;
+let noGone = false;
+
 function growYes() {
   yesScale += 0.25;
 
-  // Cap it so it doesn't break layout but still fills screen
   if (yesScale > 6) yesScale = 6;
 
   yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
 
+  // Make Yes more dramatic as it grows
   if (yesScale >= 4) {
     yesBtn.style.padding = "40px 80px";
     yesBtn.style.fontSize = "2.2rem";
@@ -175,8 +178,20 @@ function growYes() {
     yesBtn.style.height = "30vh";
     yesBtn.style.borderRadius = "40px";
   }
-}
 
+  // 💀 Make No disappear at 4.5
+  if (yesScale >= 4.5 && !noGone) {
+    noGone = true;
+
+    noBtn.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+    noBtn.style.opacity = "0";
+    noBtn.style.transform += " scale(0.3)";
+
+    setTimeout(() => {
+      noBtn.style.display = "none";
+    }, 400);
+  }
+}
 
 function moveNo() {
   const padding = 20;
@@ -199,7 +214,7 @@ function moveNo() {
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
-  heart.innerHTML = "🤎";
+  heart.innerHTML = "❤️";
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.animationDuration = 4 + Math.random() * 4 + "s";
   document.body.appendChild(heart);
@@ -238,7 +253,7 @@ yesBtn.addEventListener("click", () => {
     ">
       <h1 style="font-size:2.6rem;">
         SHE SAID YES!!! 💖🎉<br><br>
-        Happy Valentine’s Day, Kriti 🤎<br>
+        Happy Valentine’s Day, Kriti ❤️<br>
         I love you endlessly 🌹
       </h1>
     </div>
